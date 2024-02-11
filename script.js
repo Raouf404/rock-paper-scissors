@@ -4,7 +4,9 @@
 // Declarations
 // ---------------------------------------------------------------------------------------
 
-let choices = ['Rock', 'Paper', 'Scissors'];
+const CHOICES = ['Rock', 'Paper', 'Scissors'];
+let score = document.getElementById('score');
+let wins = 0;
 
 // ---------------------------------------------------------------------------------------
 // Functions
@@ -15,7 +17,7 @@ function getCompmuterChoice() {
 }
 
 function playerSelection() {
-  let selection = prompt('Rock, Paper or Scissors');
+  let selection = prompt('Rock 0, Paper 1 or Scissors 2');
   if (selection.toLowerCase() === 'rock' || selection === '0') {
     return '0';
   } else if (selection.toLowerCase() === 'paper' || selection === '1') {
@@ -30,7 +32,6 @@ function playerSelection() {
 
 function playRound(player, computer) {
   let cas =  player + computer;
-  console.log(cas);
   let result = '';
   switch (cas) {
     case '00':
@@ -42,20 +43,28 @@ function playRound(player, computer) {
     case '21':
     case '02':
       result = 'You win! ';
-      result += `${choices[player]} beats ${choices[computer]}`;
+      result += `${CHOICES[player]} beats ${CHOICES[computer]}`;
+      wins += 1;
       break;
     case '01':
     case '12':
     case '20':
       result = 'You lose! ';
-      result += `${choices[computer]} beats ${choices[player]}`;
+      result += `${CHOICES[computer]} beats ${CHOICES[player]}`;
       break;
   }
 
   return result;
 }
 
-let player = playerSelection();
-if (player != '-1') {
-  console.log(playRound(player, getCompmuterChoice()));
+function playGame(n) {
+  for (let i = 0; i < n; i++) {
+    let player = playerSelection();
+    if (player != '-1') {
+      console.log(playRound(player, getCompmuterChoice()));
+    }
+  }
+  score.innerHTML += `${wins}/${n}`;
 }
+
+playGame(5);

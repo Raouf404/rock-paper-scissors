@@ -4,9 +4,13 @@
 // Declarations
 // -------------------------------------------------------------------------------------------------
 
-const CHOICES = ["Rock", "Paper", "Scissors"];
+const CHOICES = ["rock", "paper", "scissors"];
 let score = document.getElementById("score");
-let wins = 0;
+let buttons = document.getElementsByTagName("button");
+let play = document.getElementById("play");
+let wins = 0,
+  played = 0,
+  choice = "";
 
 // -------------------------------------------------------------------------------------------------
 // Functions
@@ -33,7 +37,10 @@ function playerSelection() {
 }
 
 function playRound(player, computer) {
-  let cas = player + computer;
+  if (CHOICES.includes(player)) {
+    player = CHOICES.indexOf(player);
+  }
+  let cas = String(player) + computer;
   let result = "";
   switch (cas) {
     case "00":
@@ -47,7 +54,6 @@ function playRound(player, computer) {
       result = "You win! ";
       result += `${CHOICES[player]} beats ${CHOICES[computer]}`;
       wins += 1;
-      break;
     case "01":
     case "12":
     case "20":
@@ -59,14 +65,20 @@ function playRound(player, computer) {
   return result;
 }
 
-function playGame(n) {
-  for (let i = 0; i < n; i++) {
-    let player = playerSelection();
-    if (player != "-1") {
-      console.log(playRound(player, getCompmuterChoice()));
-    }
+function playGame(player) {
+  if (player != "-1") {
+    console.log(playRound(player, getCompmuterChoice()));
+    played++;
   }
-  score.innerHTML += `${wins}/${n}`;
+  score.innerHTML = `${wins}/${played}`;
 }
 
-playGame(5);
+//--------------------------------------------------------------------------------------------------
+// Event Listeners
+// -------------------------------------------------------------------------------------------------
+
+Array.from(buttons).forEach((button) => {
+  button.addEventListener("click", (e) => {
+    playGame(e.target.id);
+  });
+});
